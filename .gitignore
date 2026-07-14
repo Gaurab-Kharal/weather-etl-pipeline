@@ -1,0 +1,7 @@
+*.csv
+data/processed/
+data/raw/
+__pycache__/
+envs/
+*.parquet
+
