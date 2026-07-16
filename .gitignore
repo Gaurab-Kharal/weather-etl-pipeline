@@ -4,4 +4,5 @@ data/raw/
 __pycache__/
 envs/
 *.parquet
-
+.venv/
+.cache/
