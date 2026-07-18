@@ -44,7 +44,9 @@ def fetch_load_data(latitude,logitude, city_name ):
     berlin_df = fetch_forecast(latitude, logitude, city_name)
     if berlin_df is not None:
         berlin_df.to_csv(real_file_path_raw, index=False)
-        print(berlin_df.head(24))
+        print(f"Data was loaded to {real_file_path_raw}")
+        print(f"sample of loaded data \n\n{berlin_df.sample(5)}")
+        
 
 if __name__ == "__main__" : 
     fetch_load_data(52.52, 13.41, "Berlin")
