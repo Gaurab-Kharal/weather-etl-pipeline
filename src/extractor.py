@@ -39,8 +39,13 @@ def fetch_forecast(latitude, longitude, city_name):
     # returning the resulted DataFrame and existing the function
     return df
 
-berlin_df = fetch_forecast(52.52, 13.41, "Berlin")
 
-if berlin_df is not None:
-    berlin_df.to_csv(real_file_path_raw, index=False)
-    print(berlin_df.head(24))
+def fetch_load_data(latitude,logitude, city_name ):
+    berlin_df = fetch_forecast(latitude, logitude, city_name)
+    if berlin_df is not None:
+        berlin_df.to_csv(real_file_path_raw, index=False)
+        print(berlin_df.head(24))
+
+if __name__ == "__main__" : 
+    fetch_load_data(52.52, 13.41, "Berlin")
+
