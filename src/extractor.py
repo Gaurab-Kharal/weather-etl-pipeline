@@ -3,7 +3,7 @@ import pandas as pd
 import os 
 from config import RAW_DATA_PATH, BASE_URL
 
-real_file_path_raw = os.path.join(RAW_DATA_PATH,"berlin_raw.csv")
+raw_file_path = os.path.join(RAW_DATA_PATH,"berlin_raw.csv")
 
 def fetch_forecast(latitude, longitude, city_name):
     params = {
@@ -43,8 +43,8 @@ def fetch_forecast(latitude, longitude, city_name):
 def fetch_load_data(latitude,logitude, city_name ):
     berlin_df = fetch_forecast(latitude, logitude, city_name)
     if berlin_df is not None:
-        berlin_df.to_csv(real_file_path_raw, index=False)
-        print(f"Data was loaded to {real_file_path_raw}")
+        berlin_df.to_csv(raw_file_path, index=False)
+        print(f"Data was loaded to {raw_file_path}")
         print(f"sample of loaded data \n\n{berlin_df.sample(5)}")
         
 
