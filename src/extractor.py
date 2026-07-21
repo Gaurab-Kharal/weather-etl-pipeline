@@ -1,33 +1,53 @@
 # first definig class
 import pandas as pd
 import os 
-from config import cities, base_url, raw_data_path
+from config import base_url, raw_data_path, cities_lon_lat
 import requests 
 
 
-CITIES = cities 
+CITIES = cities_lon_lat 
 BASE_URL = base_url
+
 class WeatherExtractor:
-    def __init__(self, cities=CITIES, base_url=BASE_URL):
+    def __init__(self, cities=CITIES, url=BASE_URL):
         self.cities = cities
-        self.base_url = base_url
+        self.url = url
 
-    def fetch_one_city(self):
-        params = {
-            'longitude' : 53, 
-            'latitude' : 54
+    def fetch_cities_forecast(self):
 
-        }
-    
-        response = (requests.get(self.base_url, params)).json
-        df = pd.DataFrame(response)
+        all_cities_df = []
+        for city, coord in self.cities.items():
+            lat = coord["latitude"]
+            lon = coord["longitude"]
 
-        df.to_csv(os.join_path(raw_data_path,"x.csv"))
-
-
-
-    
-    def fetch_all_cities():
-
+            params = {
+                'latitude' : lat,
+                'longitude' : lon,
+                "hourly": "temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,surface_pressure"
+            }
         
+            response = requests.get(self.url, params)
+
+            if response.status_code != 200:
+                print(f"\n\nstatus code : {response.status_code} \nFetching Data Unsuccessful")
+                continue
+
+            dic = response.json()
+            print("___"*100)
+
+            df = pd.DataFrame(dic['hourly'])
+            df["city"] = city
+            all_cities_df.append(df)
+
+            print(df)
+
+        all_cities_df = pd.concat(all_cities_df)
+        all_cities_df.to_csv(os.path.join(raw_data_path,"cities_forecast.csv"), index = False)
+        
+
+
+if __name__ == "__main__":
+    extract_data = WeatherExtractor()
+    extract_data.fetch_cities_forecast()
+    print(extract_data)
         
